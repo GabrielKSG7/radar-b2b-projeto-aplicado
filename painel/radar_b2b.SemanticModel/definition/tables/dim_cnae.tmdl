@@ -1,0 +1,69 @@
+table dim_cnae
+	lineageTag: 4c42eb00-7ef8-4efc-a93a-f96392d34039
+
+	column cnae_cod
+		dataType: string
+		lineageTag: fb8b4668-ce93-4bb5-9ff9-b244b5f9c97c
+		summarizeBy: none
+		sourceColumn: cnae_cod
+
+		annotation SummarizationSetBy = User
+
+	column cnae
+		dataType: string
+		lineageTag: 42b17160-547a-4737-9a60-794d691053d8
+		summarizeBy: none
+		sourceColumn: cnae
+
+		annotation SummarizationSetBy = User
+
+	column cnae_rotulo
+		dataType: string
+		lineageTag: 70ed4255-5116-43f3-bec1-c5ffed814061
+		summarizeBy: none
+		sourceColumn: cnae_rotulo
+
+		annotation SummarizationSetBy = User
+
+	column divisao
+		dataType: string
+		lineageTag: 04a1f2df-694d-4937-979f-eb7e5e85718b
+		summarizeBy: none
+		sourceColumn: divisao
+
+		annotation SummarizationSetBy = User
+
+	column secao
+		dataType: string
+		lineageTag: 6052d78d-4ac0-4af7-9374-a4ff2bc87346
+		summarizeBy: none
+		sourceColumn: secao
+
+		annotation SummarizationSetBy = User
+
+	column secao_descricao
+		dataType: string
+		lineageTag: 38ede077-fc77-40d4-80f2-af7eb3e5904a
+		summarizeBy: none
+		sourceColumn: secao_descricao
+
+		annotation SummarizationSetBy = User
+
+	column secao_rotulo
+		dataType: string
+		lineageTag: 46d8712d-88e4-4975-bd2e-234f3f89893b
+		summarizeBy: none
+		sourceColumn: secao_rotulo
+
+		annotation SummarizationSetBy = User
+
+	partition dim_cnae = m
+		mode: import
+		source =
+				let
+				    Fonte = Parquet.Document(File.Contents(PastaGold & "dim_cnae.parquet")),
+				    Tipos = Table.TransformColumnTypes(Fonte, {{"cnae_cod", type text}, {"cnae", type text}, {"cnae_rotulo", type text}, {"divisao", type text}, {"secao", type text}, {"secao_descricao", type text}, {"secao_rotulo", type text}})
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,8 @@
+radar_b2b:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      # relativo à pasta radar_dbt/ (rode o dbt de dentro dela) ou defina RADAR_DB_PATH
+      path: "{{ env_var('RADAR_DB_PATH', '../data/radar.duckdb') }}"
+      threads: 4

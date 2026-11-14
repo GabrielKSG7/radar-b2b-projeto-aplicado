@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: stg_rfb__estabelecimentos
+    description: >
+      Estabelecimentos da competência alvo, Brasil inteiro. Tipagem (datas AAAAMMDD -> DATE, CNAEs secundários -> lista),
+      limpeza de texto (caracteres de controle, quebras de linha dentro do campo, espaços repetidos) e chave CNPJ de 14 posições.
+    columns:
+      - name: cnpj
+        description: "CNPJ completo (raiz + ordem + DV). Texto: pode ser alfanumérico desde jul/2026."
+      - name: data_inicio_atividade
+        description: "Data de abertura. '0'/'00000000' e datas inválidas viram NULL."
+      - name: cnaes_secundarios
+        description: "Lista de CNAEs secundários (vazia quando não há)."
+
+  - name: stg_rfb__empresas
+    description: "Dados da raiz do CNPJ. Capital social convertido de '1.234,56' para DECIMAL(18,2)."
+  - name: stg_rfb__simples
+    description: "Opção pelo Simples e pelo MEI (S/N -> boolean)."
+
+  - name: stg_rfb__cnaes
+    description: "Domínio CNAE (subclasse, 7 dígitos)."
+    columns:
+      - name: codigo
+        data_tests: [unique, not_null]
+  - name: stg_rfb__municipios
+    description: "Domínio de municípios da Receita (código próprio, não é o IBGE; sem UF)."
+    columns:
+      - name: codigo
+        data_tests: [unique, not_null]
+  - name: stg_rfb__naturezas
+    description: "Domínio de natureza jurídica."
+    columns:
+      - name: codigo
+        data_tests: [unique, not_null]
+  - name: stg_rfb__motivos
+    description: "Domínio de motivo da situação cadastral."
+    columns:
+      - name: codigo
+        data_tests: [unique, not_null]

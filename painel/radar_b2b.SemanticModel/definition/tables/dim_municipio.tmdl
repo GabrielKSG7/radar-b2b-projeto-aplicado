@@ -1,0 +1,53 @@
+table dim_municipio
+	lineageTag: a093598b-1552-4880-b9ee-d9985eb9834c
+
+	column municipio_cod
+		dataType: string
+		lineageTag: 4b79e981-9af9-46b7-9799-38e57762dc6f
+		summarizeBy: none
+		sourceColumn: municipio_cod
+
+		annotation SummarizationSetBy = User
+
+	column municipio
+		dataType: string
+		lineageTag: 5b098e4a-171f-4878-8c63-7065d5d1b654
+		summarizeBy: none
+		sourceColumn: municipio
+
+		annotation SummarizationSetBy = User
+
+	column nome_recorte
+		dataType: string
+		lineageTag: e1335ce9-cb67-40ae-bc64-2bd549219ae5
+		summarizeBy: none
+		sourceColumn: nome_recorte
+
+		annotation SummarizationSetBy = User
+
+	column uf
+		dataType: string
+		lineageTag: 82baab2c-7106-4607-9a70-f2964d863a62
+		summarizeBy: none
+		sourceColumn: uf
+
+		annotation SummarizationSetBy = User
+
+	column fl_polo
+		dataType: boolean
+		lineageTag: 8be8dc71-61d9-44b3-a256-393789575d52
+		summarizeBy: none
+		sourceColumn: fl_polo
+
+		annotation SummarizationSetBy = User
+
+	partition dim_municipio = m
+		mode: import
+		source =
+				let
+				    Fonte = Parquet.Document(File.Contents(PastaGold & "dim_municipio.parquet")),
+				    Tipos = Table.TransformColumnTypes(Fonte, {{"municipio_cod", type text}, {"municipio", type text}, {"nome_recorte", type text}, {"uf", type text}, {"fl_polo", type logical}})
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table

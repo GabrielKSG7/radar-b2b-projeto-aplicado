@@ -1,0 +1,15 @@
+relationship 33571a03-13f1-4b7c-949d-b381e663b8f3
+	fromColumn: fct_estabelecimentos.municipio_cod
+	toColumn: dim_municipio.municipio_cod
+
+relationship 777f6c41-2333-4168-9e90-450973e0cd97
+	fromColumn: fct_estabelecimentos.cnae_cod
+	toColumn: dim_cnae.cnae_cod
+
+relationship 1cf97a5b-2bc7-4d19-8d1f-8f5784344bbb
+	fromColumn: fct_estabelecimentos.porte_cod
+	toColumn: dim_porte.porte_cod
+
+relationship 9b6cce1a-1ac2-48c8-ae21-1b3de1584388
+	fromColumn: fct_estabelecimentos.data_inicio_atividade
+	toColumn: dim_calendario.data

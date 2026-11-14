@@ -1,0 +1,103 @@
+version: 2
+
+models:
+  - name: slv_estabelecimentos_recorte
+    description: >
+      Camada SILVER do Radar B2B. Todos os estabelecimentos dos municípios do recorte (config/recorte_mvp.yml),
+      qualquer situação cadastral, UM registro por CNPJ, com empresa, Simples/MEI e domínios decodificados
+      (situação, motivo, CNAE + seção, natureza jurídica, porte, matriz/filial). As regras de ICP ficam como flags.
+    data_tests:
+      - nao_vazio
+    columns:
+      - name: cnpj
+        description: "Chave do modelo. CNPJ completo de 14 posições (alfanumérico desde jul/2026)."
+        data_tests: [unique, not_null, formato_cnpj]
+      - name: cnpj_formatado
+        description: "CNPJ no formato 00.000.000/0000-00, para exibição."
+      - name: razao_social
+        description: "Razão social (vem do arquivo Empresas)."
+        data_tests:
+          - completude_minima:
+              arguments: {minimo: 0.99}
+      - name: uf
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["{{ var('uf') }}"]
+      - name: municipio_cod
+        description: "Código do município na Receita (não é o código IBGE)."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: source('bronze', 'recorte_municipios')
+                field: codigo_municipio_receita
+      - name: municipio
+        data_tests: [not_null]
+      - name: situacao_cadastral_cod
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('dom_situacao_cadastral'), field: codigo}
+      - name: situacao_cadastral
+        description: "Situação decodificada: NULA, ATIVA, SUSPENSA, INAPTA ou BAIXADA."
+        data_tests: [not_null]
+      - name: matriz_filial_cod
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dom_matriz_filial'), field: codigo}
+      - name: data_inicio_atividade
+        description: "Data de abertura do estabelecimento."
+        data_tests:
+          - data_nao_futura
+          - completude_minima:
+              arguments: {minimo: 0.99}
+      - name: cnae_principal_cod
+        description: "CNAE fiscal principal (subclasse, 7 dígitos)."
+        data_tests:
+          - completude_minima:
+              arguments: {minimo: 0.99}
+          - relationships:
+              arguments: {to: ref('stg_rfb__cnaes'), field: codigo}
+      - name: cnae_secao
+        description: "Seção CNAE (A a U), derivada da divisão pelo seed dom_cnae_secao."
+        data_tests:
+          - completude_minima:
+              arguments: {minimo: 0.99}
+      - name: natureza_juridica_cod
+        data_tests:
+          - relationships:
+              arguments: {to: ref('stg_rfb__naturezas'), field: codigo}
+      - name: porte_cod
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dom_porte_empresa'), field: codigo}
+      - name: capital_social
+        description: "Capital social em R$ (DECIMAL 18,2)."
+      - name: fl_ativo
+        description: "Situação cadastral = ATIVA."
+      - name: fl_mei
+        description: "Optante atual do MEI (regra de ICP: MEI raramente contrata contabilidade)."
+      - name: fl_natureza_empresarial
+        description: "Natureza jurídica de entidade empresarial (2xxx). Exclui órgãos públicos e entidades sem fins lucrativos."
+      - name: fl_cnae_excluido
+        description: "CNAE principal em divisão fora do público de um escritório contábil (84, 97, 99)."
+      - name: fl_aberto_na_janela
+        description: "Aberto nos últimos N meses (janela_abertura_meses) antes da data de referência."
+      - name: data_referencia
+        description: "Abertura mais recente da base — usada como 'hoje' da competência."
+      - name: ocorrencias_na_origem
+        description: "Quantas vezes o CNPJ apareceu na Bronze (>1 = duplicado removido)."
+
+  - name: slv_estabelecimentos_ativos
+    description: "Estabelecimentos ATIVOS do recorte. É a entrada da camada Gold (regra de ICP e ranking, Sprint 3)."
+    data_tests:
+      - nao_vazio
+    columns:
+      - name: cnpj
+        data_tests: [unique, not_null]
+      - name: situacao_cadastral
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["ATIVA"]

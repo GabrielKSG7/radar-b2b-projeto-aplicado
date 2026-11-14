@@ -1,0 +1,17 @@
+# ambiente e dados (a base da Receita tem ~12 GB e é baixada pelo pipeline)
+.venv/
+__pycache__/
+data/
+logs/
+entregas/
+*.duckdb
+*.duckdb.wal
+# dbt
+radar_dbt/target/
+radar_dbt/dbt_packages/
+radar_dbt/logs/
+radar_dbt/.user.yml
+# Power BI (cache local e configurações do usuário)
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+*.pbix

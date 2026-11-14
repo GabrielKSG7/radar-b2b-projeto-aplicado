@@ -1,0 +1,88 @@
+table dim_calendario
+	lineageTag: ff79dd86-c815-47aa-9ba0-1adbf977184d
+	dataCategory: Time
+
+	column data
+		dataType: dateTime
+		isKey
+		formatString: dd/mm/yyyy
+		lineageTag: 3aed43c8-cd3e-4342-9182-ec62676873e1
+		summarizeBy: none
+		sourceColumn: data
+
+		annotation SummarizationSetBy = User
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ano
+		dataType: int64
+		formatString: 0
+		lineageTag: 0f44268b-aa4c-46da-94fa-f62bd3b3c42f
+		summarizeBy: none
+		sourceColumn: ano
+
+		annotation SummarizationSetBy = User
+
+	column mes
+		dataType: int64
+		formatString: 0
+		lineageTag: 13e7d03d-7fdc-4c84-be18-7971ee2fc0c2
+		summarizeBy: none
+		sourceColumn: mes
+
+		annotation SummarizationSetBy = User
+
+	column ano_mes
+		dataType: string
+		lineageTag: edfe10d4-857a-4fa2-b3c1-a2b113c947cb
+		summarizeBy: none
+		sourceColumn: ano_mes
+		sortByColumn: ano_mes_num
+
+		annotation SummarizationSetBy = User
+
+	column ano_mes_num
+		dataType: int64
+		formatString: 0
+		lineageTag: 73c2cba5-8e2a-4ef0-92d1-90e1cea57bdc
+		summarizeBy: none
+		sourceColumn: ano_mes_num
+
+		annotation SummarizationSetBy = User
+
+	column mes_rotulo
+		dataType: string
+		lineageTag: 385199cd-f9a4-4c49-8048-e136ff2c7ad7
+		summarizeBy: none
+		sourceColumn: mes_rotulo
+		sortByColumn: ano_mes_num
+
+		annotation SummarizationSetBy = User
+
+	column trimestre
+		dataType: int64
+		formatString: 0
+		lineageTag: 835bb898-82cb-47b1-a3b3-e63d8bb5d6e9
+		summarizeBy: none
+		sourceColumn: trimestre
+
+		annotation SummarizationSetBy = User
+
+	column fl_janela_prospeccao
+		dataType: boolean
+		lineageTag: 5c368ebe-5ce3-4ecb-b0d5-b6d8148a4c66
+		summarizeBy: none
+		sourceColumn: fl_janela_prospeccao
+
+		annotation SummarizationSetBy = User
+
+	partition dim_calendario = m
+		mode: import
+		source =
+				let
+				    Fonte = Parquet.Document(File.Contents(PastaGold & "dim_calendario.parquet")),
+				    Tipos = Table.TransformColumnTypes(Fonte, {{"data", type date}, {"ano", Int64.Type}, {"mes", Int64.Type}, {"ano_mes", type text}, {"ano_mes_num", Int64.Type}, {"mes_rotulo", type text}, {"trimestre", Int64.Type}, {"fl_janela_prospeccao", type logical}})
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table

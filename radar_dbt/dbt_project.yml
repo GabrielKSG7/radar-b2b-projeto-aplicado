@@ -1,0 +1,54 @@
+name: radar_b2b
+version: "0.3.0"
+config-version: 2
+profile: radar_b2b
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+# Convenção de camadas (Medallion):
+#   bronze  -> views criadas pelo pipeline Python (fontes do dbt)                 [Sprint 1]
+#   staging -> stg_*: tipagem, limpeza de texto/encoding, um modelo por fonte      [Sprint 2]
+#   silver  -> slv_*: recorte do MVP, deduplicado, com domínios decodificados      [Sprint 2]
+#   gold    -> dim_* / fct_* / gold_*: estrela, regra de ICP e ranking              [Sprint 3]
+
+# Regras de negócio. Os valores padrão espelham config/recorte_mvp.yml;
+# o run_sprint2.py lê o YAML e repassa com --vars (mudar o recorte = mudar só o YAML).
+vars:
+  competencia: null                      # null = competência mais recente carregada com status OK
+  uf: "MG"
+  situacao_ativa: "02"
+  janela_abertura_meses: 6
+  natureza_juridica_prefixos: ["2"]
+  cnae_divisoes_excluidas: ["84", "97", "99"]
+  somente_matriz: true
+  # Regra de priorização da Gold (Sprint 3) — espelha a seção "ranking" do YAML.
+  ranking:
+    pesos: {recencia: 30, regime: 20, porte: 15, capital: 15, sociedade: 10, complexidade: 5, contato: 5}
+    pontos_simples: 8
+    faixas_capital: [[500000, 15], [100000, 11], [30000, 7], [10000, 4]]
+    sinal_contador: {palavras: [contab, contad, contáb, cnt, legaliza, paralegal, societari, fiscal, "conta@", "conta[0-9]"], min_empresas_mesmo_email: 3, penalidade: 15}
+    estrutura_patrimonial: {cnae_prefixos: ["6462", "6463"], termos_razao_social: [" SPE", "PROPOSITO ESPECIFICO"], penalidade: 25}
+    setores_complexos: {cnae_prefixos: ["4731", "1081", "86", "4930"], bonus: 10}
+    regime_incerto: {dias_max: 60, capital_ate: 100000}
+    faixas_prioridade: {A: 60, B: 40}
+
+models:
+  radar_b2b:
+    staging:
+      +schema: silver
+      +materialized: view               # leve: só tipa e limpa, o filtro acontece na Silver
+    silver:
+      +schema: silver
+      +materialized: table              # recorte pequeno, materializado para o BI e para os testes
+    gold:
+      +schema: gold
+      +materialized: table              # modelo estrela consumido pelo Power BI (exportado em Parquet)
+
+seeds:
+  radar_b2b:
+    +schema: silver                     # tipos das colunas (códigos com zero à esquerda) em seeds/_seeds.yml

@@ -1,0 +1,33 @@
+version: 2
+
+# Domínios que a Receita NÃO publica em arquivo (só no layout em PDF dos dados abertos).
+# Versionados como seeds para que a decodificação fique rastreável e testada.
+seeds:
+  - name: dom_situacao_cadastral
+    config:
+      column_types: {codigo: varchar}
+    description: "Situação cadastral do estabelecimento (layout oficial dos dados abertos do CNPJ)."
+    columns:
+      - name: codigo
+        data_tests: [unique, not_null]
+  - name: dom_porte_empresa
+    config:
+      column_types: {codigo: varchar}
+    description: "Porte da empresa declarado à Receita."
+    columns:
+      - name: codigo
+        data_tests: [unique, not_null]
+  - name: dom_matriz_filial
+    config:
+      column_types: {codigo: varchar}
+    description: "Identificador matriz (1) ou filial (2)."
+    columns:
+      - name: codigo
+        data_tests: [unique, not_null]
+  - name: dom_cnae_secao
+    config:
+      column_types: {divisao: varchar}
+    description: "Divisão CNAE 2.3 (2 primeiros dígitos) -> seção (A a U). Agrupa as 1.359 subclasses em 21 setores para o painel."
+    columns:
+      - name: divisao
+        data_tests: [unique, not_null]

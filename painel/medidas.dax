@@ -1,0 +1,26 @@
+// ============================================================================
+// Radar B2B — medidas DAX. Crie todas na tabela fct_estabelecimentos
+// (Ferramentas de Tabela > Nova medida > cole uma por vez).
+// ============================================================================
+
+Ativos = COUNTROWS ( fct_estabelecimentos )
+
+Abertos na janela =
+CALCULATE ( [Ativos], fct_estabelecimentos[fl_aberto_na_janela] = TRUE () )
+
+Oportunidades =
+CALCULATE ( [Ativos], fct_estabelecimentos[fl_icp] = TRUE () )
+
+Oportunidades Faixa A =
+CALCULATE ( [Oportunidades], fct_estabelecimentos[faixa_prioridade] = "A" )
+
+Sem contador identificado =
+CALCULATE ( [Oportunidades], fct_estabelecimentos[fl_email_contabilidade] = FALSE () )
+
+% do mercado ativo = DIVIDE ( [Oportunidades], [Ativos] )
+
+Score medio =
+CALCULATE ( AVERAGE ( fct_estabelecimentos[score] ), fct_estabelecimentos[fl_icp] = TRUE () )
+
+Base de referencia =
+"Base da Receita com aberturas até " & FORMAT ( MAX ( fct_estabelecimentos[data_referencia] ), "dd/mm/yyyy" )

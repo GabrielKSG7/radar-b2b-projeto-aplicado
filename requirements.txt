@@ -1,0 +1,7 @@
+# Versões fixadas (as mesmas testadas na Sprint 2). DuckDB 2.0 mudou a sintaxe de lambda: não atualize sem testar.
+duckdb==2.0.0
+httpx==0.28.1
+pyyaml==6.0.3
+dbt-core==1.12.6
+dbt-duckdb==1.11.1
+openpyxl==3.1.5

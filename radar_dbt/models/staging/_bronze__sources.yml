@@ -1,0 +1,67 @@
+version: 2
+
+# Fontes = camada Bronze carregada pelo pipeline Python (views no schema "bronze" do radar.duckdb).
+# Os testes abaixo são o "portão de qualidade" da Sprint 1: se a ingestão quebrar, o dbt avisa.
+sources:
+  - name: bronze
+    description: "Dados abertos do CNPJ (Receita Federal), crus, em Parquet particionado por competência."
+    schema: bronze
+    tables:
+      - name: controle_carga
+        description: "Linhas no arquivo de origem x linhas gravadas no Parquet, por arquivo da Receita."
+        columns:
+          - name: status
+            data_tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ["OK"]
+          - name: linhas_parquet
+            data_tests: [not_null]
+
+      - name: estabelecimentos
+        description: "Um registro por estabelecimento (matriz/filial). Grão do produto."
+        columns:
+          - name: cnpj_basico
+            data_tests: [not_null]
+          - name: municipio
+            data_tests: [not_null]
+
+      - name: empresas
+        columns:
+          - name: cnpj_basico
+            data_tests: [not_null]
+
+      - name: simples
+        columns:
+          - name: cnpj_basico
+            data_tests: [not_null]
+
+      - name: municipios
+        columns:
+          - name: codigo
+            data_tests: [not_null]
+
+      - name: cnaes
+        columns:
+          - name: codigo
+            data_tests: [not_null]
+
+      - name: naturezas
+        columns:
+          - name: codigo
+            data_tests: [not_null]
+
+      - name: motivos
+        columns:
+          - name: codigo
+            data_tests: [not_null]
+
+      - name: recorte_municipios
+        description: "Municípios do recorte do MVP resolvidos para o código da Receita."
+        columns:
+          - name: codigo_municipio_receita
+            data_tests: [unique, not_null]
+          - name: nome_recorte
+            description: "Um código por município do recorte (pega nome repetido entre estados)."
+            data_tests: [unique, not_null]

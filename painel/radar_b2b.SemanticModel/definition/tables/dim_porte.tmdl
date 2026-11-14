@@ -1,0 +1,39 @@
+table dim_porte
+	lineageTag: 05a664e7-71a5-4cfd-b0b8-e857be947944
+
+	column porte_cod
+		dataType: string
+		lineageTag: e0f643de-ba72-4035-9152-21c44b733960
+		summarizeBy: none
+		sourceColumn: porte_cod
+
+		annotation SummarizationSetBy = User
+
+	column porte
+		dataType: string
+		lineageTag: 82bdfa8e-fc6b-4fe1-b067-e42ef209ce0d
+		summarizeBy: none
+		sourceColumn: porte
+		sortByColumn: ordem
+
+		annotation SummarizationSetBy = User
+
+	column ordem
+		dataType: int64
+		formatString: 0
+		lineageTag: a61de251-eb7e-4f6c-96d4-ac276abff4c6
+		summarizeBy: none
+		sourceColumn: ordem
+
+		annotation SummarizationSetBy = User
+
+	partition dim_porte = m
+		mode: import
+		source =
+				let
+				    Fonte = Parquet.Document(File.Contents(PastaGold & "dim_porte.parquet")),
+				    Tipos = Table.TransformColumnTypes(Fonte, {{"porte_cod", type text}, {"porte", type text}, {"ordem", Int64.Type}})
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table

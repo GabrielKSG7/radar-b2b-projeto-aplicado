@@ -1,0 +1,117 @@
+version: 2
+
+# Camada GOLD (Sprint 3): modelo estrela consumido pelo Power BI.
+#   fct_estabelecimentos  (1 linha por CNPJ ativo)  --> dim_municipio · dim_cnae · dim_porte · dim_calendario
+#   gold_oportunidades    (lista priorizada: só o ICP, em ordem de ranking)
+
+models:
+  - name: dim_municipio
+    description: "Os 16 municípios do recorte (código da Receita, não IBGE)."
+    columns:
+      - name: municipio_cod
+        data_tests: [unique, not_null]
+      - name: municipio
+        data_tests: [not_null]
+
+  - name: dim_cnae
+    description: "CNAEs presentes no recorte, com a hierarquia subclasse > divisão > seção."
+    columns:
+      - name: cnae_cod
+        data_tests: [unique, not_null]
+      - name: secao
+        data_tests: [not_null]
+
+  - name: dim_porte
+    description: "Porte da empresa, com ordem de exibição."
+    columns:
+      - name: porte_cod
+        data_tests: [unique, not_null]
+
+  - name: dim_calendario
+    description: "Um dia por linha; ano_mes é o filtro de mês de abertura e fl_janela_prospeccao marca a janela do ICP."
+    columns:
+      - name: data
+        data_tests: [unique, not_null]
+
+  - name: fct_estabelecimentos
+    description: >
+      Fato da Gold. Um estabelecimento ativo do recorte por linha, com a regra de ICP aplicada (fl_icp e etapa_funil)
+      e, para as oportunidades, os pontos de cada critério, o score (0 a 100), a faixa A/B/C, o ranking e os motivos.
+    data_tests:
+      - nao_vazio
+    columns:
+      - name: cnpj
+        description: "Chave do fato. CNPJ de 14 posições."
+        data_tests: [unique, not_null]
+      # --- campos críticos do Objetivo SMART: meta de 98% de completude ---
+      - name: razao_social
+        data_tests:
+          - completude_minima:
+              arguments: {minimo: 0.98}
+      - name: municipio_cod
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('dim_municipio'), field: municipio_cod}
+      - name: cnae_cod
+        data_tests:
+          - completude_minima:
+              arguments: {minimo: 0.98}
+          - relationships:
+              arguments: {to: ref('dim_cnae'), field: cnae_cod}
+      - name: data_inicio_atividade
+        data_tests:
+          - completude_minima:
+              arguments: {minimo: 0.98}
+          - relationships:
+              arguments: {to: ref('dim_calendario'), field: data}
+      - name: porte_cod
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_porte'), field: porte_cod}
+      - name: etapa_funil
+        description: "Primeiro critério do ICP que reprova o estabelecimento (ou 'Oportunidade (ICP)')."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ["1. Aberta antes da janela", "2. MEI", "3. Natureza não empresarial",
+                         "4. CNAE fora do público", "5. Filial (contabilidade na matriz)",
+                         "6. Oportunidade (ICP)"]
+      - name: score
+        description: "Soma dos pontos dos 7 critérios (0 a 100). Nulo fora do ICP."
+        data_tests:
+          - entre:
+              arguments: {minimo: 0, maximo: 100}
+      - name: faixa_prioridade
+        description: "A (score >= 60), B (>= 40) ou C. Limites em config/recorte_mvp.yml."
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["A", "B", "C"]
+      - name: ranking
+        description: "Posição da oportunidade na lista (1 = abordar primeiro). Nulo fora do ICP."
+        data_tests: [unique]
+      - name: motivos
+        description: "Explicação do score em texto (ex.: 'aberta há 12 dias · fora do simples · porte demais ...')."
+      - name: fl_email_contabilidade
+        description: >
+          E-mail do cadastro parece ser de escritório contábil (palavra-chave ou mesmo e-mail em 3+ empresas sem relação).
+          Sinal de que a empresa provavelmente já tem contador; desconta pontos do score.
+
+  - name: gold_oportunidades
+    description: "Lista mensal priorizada de empresas recém-abertas que se encaixam no ICP. Entregável do produto."
+    data_tests:
+      - nao_vazio
+    columns:
+      - name: ranking
+        data_tests: [unique, not_null]
+      - name: cnpj
+        data_tests: [unique, not_null]
+      - name: score
+        data_tests:
+          - not_null
+          - entre:
+              arguments: {minimo: 0, maximo: 100}
+      - name: motivos
+        data_tests: [not_null]

@@ -1,0 +1,5 @@
+/// Pasta com os Parquet da camada Gold, gerados pelo run_sprint3.py (com barra no final)
+expression PastaGold = "G:\XP\PA\SPRINTS\SPRINT 1 - SP105 - Postagem da Sprint 1\radar-b2b\data\gold\" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+	lineageTag: b4b6576e-7988-4c99-bc72-ee26e86c7a96
+
+	annotation PBI_ResultType = Text

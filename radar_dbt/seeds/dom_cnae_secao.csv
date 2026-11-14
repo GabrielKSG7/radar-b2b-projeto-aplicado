@@ -1,0 +1,88 @@
+divisao,secao,descricao_secao
+01,A,"Agricultura, pecuária, produção florestal, pesca e aquicultura"
+02,A,"Agricultura, pecuária, produção florestal, pesca e aquicultura"
+03,A,"Agricultura, pecuária, produção florestal, pesca e aquicultura"
+05,B,Indústrias extrativas
+06,B,Indústrias extrativas
+07,B,Indústrias extrativas
+08,B,Indústrias extrativas
+09,B,Indústrias extrativas
+10,C,Indústrias de transformação
+11,C,Indústrias de transformação
+12,C,Indústrias de transformação
+13,C,Indústrias de transformação
+14,C,Indústrias de transformação
+15,C,Indústrias de transformação
+16,C,Indústrias de transformação
+17,C,Indústrias de transformação
+18,C,Indústrias de transformação
+19,C,Indústrias de transformação
+20,C,Indústrias de transformação
+21,C,Indústrias de transformação
+22,C,Indústrias de transformação
+23,C,Indústrias de transformação
+24,C,Indústrias de transformação
+25,C,Indústrias de transformação
+26,C,Indústrias de transformação
+27,C,Indústrias de transformação
+28,C,Indústrias de transformação
+29,C,Indústrias de transformação
+30,C,Indústrias de transformação
+31,C,Indústrias de transformação
+32,C,Indústrias de transformação
+33,C,Indústrias de transformação
+35,D,Eletricidade e gás
+36,E,"Água, esgoto, atividades de gestão de resíduos e descontaminação"
+37,E,"Água, esgoto, atividades de gestão de resíduos e descontaminação"
+38,E,"Água, esgoto, atividades de gestão de resíduos e descontaminação"
+39,E,"Água, esgoto, atividades de gestão de resíduos e descontaminação"
+41,F,Construção
+42,F,Construção
+43,F,Construção
+45,G,Comércio; reparação de veículos automotores e motocicletas
+46,G,Comércio; reparação de veículos automotores e motocicletas
+47,G,Comércio; reparação de veículos automotores e motocicletas
+49,H,"Transporte, armazenagem e correio"
+50,H,"Transporte, armazenagem e correio"
+51,H,"Transporte, armazenagem e correio"
+52,H,"Transporte, armazenagem e correio"
+53,H,"Transporte, armazenagem e correio"
+55,I,Alojamento e alimentação
+56,I,Alojamento e alimentação
+58,J,Informação e comunicação
+59,J,Informação e comunicação
+60,J,Informação e comunicação
+61,J,Informação e comunicação
+62,J,Informação e comunicação
+63,J,Informação e comunicação
+64,K,"Atividades financeiras, de seguros e serviços relacionados"
+65,K,"Atividades financeiras, de seguros e serviços relacionados"
+66,K,"Atividades financeiras, de seguros e serviços relacionados"
+68,L,Atividades imobiliárias
+69,M,"Atividades profissionais, científicas e técnicas"
+70,M,"Atividades profissionais, científicas e técnicas"
+71,M,"Atividades profissionais, científicas e técnicas"
+72,M,"Atividades profissionais, científicas e técnicas"
+73,M,"Atividades profissionais, científicas e técnicas"
+74,M,"Atividades profissionais, científicas e técnicas"
+75,M,"Atividades profissionais, científicas e técnicas"
+77,N,Atividades administrativas e serviços complementares
+78,N,Atividades administrativas e serviços complementares
+79,N,Atividades administrativas e serviços complementares
+80,N,Atividades administrativas e serviços complementares
+81,N,Atividades administrativas e serviços complementares
+82,N,Atividades administrativas e serviços complementares
+84,O,"Administração pública, defesa e seguridade social"
+85,P,Educação
+86,Q,Saúde humana e serviços sociais
+87,Q,Saúde humana e serviços sociais
+88,Q,Saúde humana e serviços sociais
+90,R,"Artes, cultura, esporte e recreação"
+91,R,"Artes, cultura, esporte e recreação"
+92,R,"Artes, cultura, esporte e recreação"
+93,R,"Artes, cultura, esporte e recreação"
+94,S,Outras atividades de serviços
+95,S,Outras atividades de serviços
+96,S,Outras atividades de serviços
+97,T,Serviços domésticos
+99,U,Organismos internacionais e outras instituições extraterritoriais

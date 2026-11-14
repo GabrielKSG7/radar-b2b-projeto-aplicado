@@ -1,0 +1,83 @@
+# =====================================================================
+# Radar B2B — Recorte do MVP e regra de priorização
+# Define O QUE entra no produto (Sprint 1) e COMO as oportunidades são
+# ranqueadas (Sprint 3). Silver e Gold leem este arquivo; mudar a regra = mudar só aqui.
+# =====================================================================
+
+regiao:
+  nome: "Microrregião de Varginha (Sul de Minas)"
+  uf: "MG"
+  # Nomes como aparecem na tabela Municipios da Receita (sem acento, maiúsculo).
+  # O código da Receita NÃO é o código IBGE: ele é resolvido automaticamente
+  # pelo script 04 e gravado em config/recorte_resolvido.csv.
+  municipios:
+    - VARGINHA
+    - TRES CORACOES
+    - TRES PONTAS
+    - ELOI MENDES
+    - BOA ESPERANCA
+    - CAMPANHA
+    - CAMPO DO MEIO
+    - CAMPOS GERAIS
+    - CARMO DA CACHOEIRA
+    - COQUEIRAL
+    - GUAPE
+    - ILICINEA
+    - MONSENHOR PAULO
+    - SANTANA DA VARGEM
+    - SAO BENTO ABADE
+    - SAO THOME DAS LETRAS
+
+estabelecimento:
+  situacao_cadastral_ativa: "02"        # 02 = Ativa
+  janela_abertura_meses: 6              # empresas com início de atividade nos últimos N meses
+  excluir_mei: true                     # MEI raramente contrata contabilidade (persona Ricardo)
+  natureza_juridica_prefixo: ["2"]      # 2xxx = entidades empresariais (exclui órgãos públicos e sem fins lucrativos)
+  somente_matriz: true                  # Sprint 3: filial segue a contabilidade da matriz (ex.: filiais de estatais no topo do ranking)
+
+cnae:
+  # Estratégia do MVP: todas as divisões entram, exceto as que não são clientes de um escritório contábil.
+  divisoes_excluidas:
+    "84": "Administração pública, defesa e seguridade social"
+    "97": "Serviços domésticos"
+    "99": "Organismos internacionais"
+
+ranking:
+  # Score de 0 a 100 para cada oportunidade do ICP. Cada critério soma pontos e vira um motivo
+  # em texto na lista, para o escritório entender POR QUE a empresa está no topo.
+  pesos:
+    recencia: 30        # aberta há menos tempo = abordagem antes do concorrente (proporcional aos dias na janela)
+    regime: 20          # fora do Simples (Lucro Presumido/Real) = honorário maior; Simples ganha 8
+    porte: 15           # DEMAIS 15 · EPP 10 · ME 5
+    capital: 15         # faixas de capital social abaixo
+    sociedade: 10       # sociedade (LTDA, S.A. etc.) = sócios, contrato social, distribuição de lucros; empresário individual ganha 0
+    complexidade: 5     # 3 ou mais CNAEs secundários = mais obrigações acessórias
+    contato: 5          # e-mail e telefone = dá para abordar
+  pontos_simples: 8
+  faixas_capital:       # capital social mínimo (R$) -> pontos
+    - [500000, 15]
+    - [100000, 11]
+    - [30000, 7]
+    - [10000, 4]
+  sinal_contador:       # Sprint 3: o e-mail do cadastro costuma ser do escritório que abriu a empresa
+    palavras: [contab, contad, contáb, cnt, legaliza, paralegal, societari, fiscal, "conta@", "conta[0-9]"]
+    min_empresas_mesmo_email: 3   # o mesmo e-mail em 3+ empresas sem relação (raízes de CNPJ diferentes) = escritório
+    penalidade: 15                # pontos descontados: provável cliente de outro escritório (0 = desliga)
+  # Ajustes da revisão do cartão 5 (avaliação simulada, testada na base de out/2026)
+  estrutura_patrimonial:            # holding/participação/SPE: capital alto, pouca rotina contábil
+    cnae_prefixos: ["6462", "6463"]
+    termos_razao_social: [" SPE", "PROPOSITO ESPECIFICO"]
+    penalidade: 25
+  setores_complexos:                # rotina fiscal/folha pesada, mesmo com capital baixo
+    cnae_prefixos: ["4731", "1081", "86", "4930"]   # postos, torrefação, saúde humana, transporte de carga
+    bonus: 10
+  regime_incerto:                   # recém-aberta "fora do Simples" pode só estar aguardando a opção
+    dias_max: 60
+    capital_ate: 100000
+  faixas_prioridade:    # score mínimo -> faixa
+    A: 60
+    B: 40               # abaixo de 40 = C
+
+arquivos_receita:
+  # Socios fica fora do MVP (não é usado pela regra de priorização).
+  incluir: [Empresas, Estabelecimentos, Simples, Cnaes, Municipios, Naturezas, Motivos, Paises, Qualificacoes]

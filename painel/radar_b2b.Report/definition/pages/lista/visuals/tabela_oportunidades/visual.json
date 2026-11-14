@@ -1,0 +1,243 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "tabela_oportunidades",
+  "position": {
+    "x": 215,
+    "y": 150,
+    "z": 12000,
+    "width": 1055,
+    "height": 565,
+    "tabOrder": 12000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fct_estabelecimentos"
+                    }
+                  },
+                  "Property": "ranking"
+                }
+              },
+              "queryRef": "fct_estabelecimentos.ranking",
+              "nativeQueryRef": "ranking",
+              "displayName": "Pos."
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fct_estabelecimentos"
+                    }
+                  },
+                  "Property": "faixa_prioridade"
+                }
+              },
+              "queryRef": "fct_estabelecimentos.faixa_prioridade",
+              "nativeQueryRef": "faixa_prioridade",
+              "displayName": "Faixa"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fct_estabelecimentos"
+                    }
+                  },
+                  "Property": "score"
+                }
+              },
+              "queryRef": "fct_estabelecimentos.score",
+              "nativeQueryRef": "score",
+              "displayName": "Score"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fct_estabelecimentos"
+                    }
+                  },
+                  "Property": "razao_social"
+                }
+              },
+              "queryRef": "fct_estabelecimentos.razao_social",
+              "nativeQueryRef": "razao_social",
+              "displayName": "Razão social"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fct_estabelecimentos"
+                    }
+                  },
+                  "Property": "municipio"
+                }
+              },
+              "queryRef": "fct_estabelecimentos.municipio",
+              "nativeQueryRef": "municipio",
+              "displayName": "Município"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_cnae"
+                    }
+                  },
+                  "Property": "cnae"
+                }
+              },
+              "queryRef": "dim_cnae.cnae",
+              "nativeQueryRef": "cnae",
+              "displayName": "CNAE principal"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_porte"
+                    }
+                  },
+                  "Property": "porte"
+                }
+              },
+              "queryRef": "dim_porte.porte",
+              "nativeQueryRef": "porte",
+              "displayName": "Porte"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fct_estabelecimentos"
+                    }
+                  },
+                  "Property": "regime_tributario"
+                }
+              },
+              "queryRef": "fct_estabelecimentos.regime_tributario",
+              "nativeQueryRef": "regime_tributario",
+              "displayName": "Regime"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fct_estabelecimentos"
+                    }
+                  },
+                  "Property": "data_inicio_atividade"
+                }
+              },
+              "queryRef": "fct_estabelecimentos.data_inicio_atividade",
+              "nativeQueryRef": "data_inicio_atividade",
+              "displayName": "Abertura"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fct_estabelecimentos"
+                    }
+                  },
+                  "Property": "telefone_1"
+                }
+              },
+              "queryRef": "fct_estabelecimentos.telefone_1",
+              "nativeQueryRef": "telefone_1",
+              "displayName": "Telefone"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fct_estabelecimentos"
+                    }
+                  },
+                  "Property": "email"
+                }
+              },
+              "queryRef": "fct_estabelecimentos.email",
+              "nativeQueryRef": "email",
+              "displayName": "E-mail"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fct_estabelecimentos"
+                    }
+                  },
+                  "Property": "motivos"
+                }
+              },
+              "queryRef": "fct_estabelecimentos.motivos",
+              "nativeQueryRef": "motivos",
+              "displayName": "Por que está nesta posição"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fct_estabelecimentos"
+                  }
+                },
+                "Property": "ranking"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Oportunidades do ICP, da mais para a menos prioritária'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
