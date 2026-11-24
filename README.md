@@ -48,6 +48,23 @@ Exemplo de motivo: *"aberta há 4 dias · fora do simples · porte demais · cap
 
 ![Ranking antes x depois](docs/img/ranking_antes_depois.png)
 
+## Entrega final (dezembro/2026)
+
+O Projeto Aplicado foi concluído com o relatório final e o pitch em vídeo para a banca.
+
+![Canvas do Projeto Aplicado](docs/img/canvas_projeto_aplicado.png)
+
+- [Relatório final (PDF)](docs/entrega-final/relatorio_final.pdf): desafio, solução, as três Sprints e as considerações finais (resultados, contribuições e próximos passos).
+- [Slides do pitch (PDF)](docs/entrega-final/pitch.pdf): a apresentação de cerca de 10 minutos.
+
+**Limitação assumida:** a lista não foi validada por um escritório contábil real dentro do prazo das Sprints. A validação foi técnica (amostra de 30 CNPJs conferida em fonte independente, 100% de acerto). O piloto com escritórios é o primeiro próximo passo.
+
+## Próximos passos
+
+1. Piloto de quatro semanas com dois ou três escritórios, medindo quantas oportunidades da faixa A viram contato útil.
+2. Agendar a carga mensal e guardar o histórico para detectar outros eventos (mudança de endereço, atividade e porte).
+3. Completar o contato (sócios, e-mail e telefone) dentro da LGPD e entregar a lista do mês direto ao usuário, com texto de abordagem sugerido por IA.
+
 ## Como rodar (Windows)
 
 ```bat
