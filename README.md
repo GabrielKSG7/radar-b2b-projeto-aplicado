@@ -55,7 +55,8 @@ O Projeto Aplicado foi concluído com o relatório final e o pitch em vídeo par
 ![Canvas do Projeto Aplicado](docs/img/canvas_projeto_aplicado.png)
 
 - [Relatório final (PDF)](docs/entrega-final/relatorio_final.pdf): desafio, solução, as três Sprints e as considerações finais (resultados, contribuições e próximos passos).
-- [Slides do pitch (PDF)](docs/entrega-final/pitch.pdf): a apresentação de cerca de 10 minutos.
+- [Vídeo do pitch (Google Drive)](https://drive.google.com/file/d/1lQtiXr41faJDaIJ4881VS14KMNISrTue/view?usp=sharing): apresentação para a banca, 9min50s.
+- [Slides do pitch (PDF)](docs/entrega-final/pitch.pdf): os slides usados no vídeo.
 
 **Limitação assumida:** a lista não foi validada por um escritório contábil real dentro do prazo das Sprints. A validação foi técnica (amostra de 30 CNPJs conferida em fonte independente, 100% de acerto). O piloto com escritórios é o primeiro próximo passo.
 
